@@ -24,8 +24,11 @@ namespace DevIO.Api
             services.AddDbContext<MeuDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+
+            services.AddControllers();
+
             services.AddAutoMapper(typeof(Startup));
-            services.AddRazorPages();
+           
             services.ResolveDependencies();
         }
 
@@ -44,16 +47,30 @@ namespace DevIO.Api
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseStaticFiles();
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapRazorPages();
-            //});
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                //endpoints.MapHealthChecks("/api/hc", new HealthCheckOptions()
+                //{
+                //    Predicate = _ => true,
+                //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                //});
+                //endpoints.MapHealthChecksUI(options =>
+                //{
+                //    options.UIPath = "/api/hc-ui";
+                //    options.ResourcesPath = "/api/hc-ui-resources";
+
+                //    options.UseRelativeApiPath = false;
+                //    options.UseRelativeResourcesPath = false;
+                //    options.UseRelativeWebhookPath = false;
+                //});
+
+            });
         }
     }
 }
